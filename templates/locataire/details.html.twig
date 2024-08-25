@@ -1,0 +1,144 @@
+{% include '/layouts/app.html.twig' %}
+<div class="main-panel">
+   <div class="content-wrapper bg-white">
+      <!-- Détails du locataire -->
+      <div class="row">
+         <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+               <div class="full graph_head">
+                  <div class="heading1 margin_0">
+                     <h2><i class="fa fa-file-text-o"></i> {{ locataire.nom }}</h2>
+                  </div>
+               </div>
+               <div class="full">
+                  <div class="invoice_inner">
+                     <div class="row">
+                        <div class="col-md-4">
+                           <div class="full invoice_blog padding_infor_info padding-bottom_0">
+                              <h5>De</h5>
+                              <p><strong>{{ locataire.lieunaissance }}</strong><br>  
+                                 Filière {{ locataire.filiere }}<br> 
+                                 Niveau {{ locataire.niveau }}<br>    
+                                 Genre {{ locataire.genre }}<br>    
+                              </p>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="full invoice_blog padding_infor_info padding-bottom_0">
+                              <h4>Depuis</h4>
+                              <p><strong>
+                                 {{ locataire.createdAt ? locataire.createdAt|date('Y-m-d H:i:s') : 'N/A' }}
+                              </strong><br>  
+                                 Date de naissance: {{ locataire.datenaissance ? locataire.datenaissance|date('Y-m-d H:i:s') : 'N/A' }} <br> 
+                                 Lieu de naissance: {{ locataire.lieunaissance }}<br> 
+                                 <strong>Téléphone parent: </strong><a href="tel:{{ locataire.telephone }}">{{ locataire.telephone }}<br></a><br>  
+                              </p>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="full invoice_blog padding_infor_info padding-bottom_0">
+                              <h4>Contact</h4>
+                              <p>
+                                 <strong>Téléphone:</strong><a href="tel:{{ locataire.telephone }}">{{ locataire.telephone }}<br></a><br>  
+                                 <strong>Email:</strong><a href="mailto:{{ locataire.email }}">{{ locataire.email }}<br></a><br>  
+                                 <strong>Adresse:</strong> {{ locataire.adresse }}<br><br>  
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+               <div class="full padding_infor_info">
+                  <div class="table_row">
+                     <div class="table-responsive">
+                        <h3>Historique de location</h3>
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th>Chambre</th>
+                                 <th>Année d'occupation</th>
+                                 <th>Date de début</th>
+                                 <th>Durée</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for item in chambresAvecPaiements %}
+                                 <tr>
+                                    <td>{{ item.chambre.chambre.nom }}</td>
+                                    <td>{{ item.chambre.anneeAcademique.nom }}</td>
+                                    <td>{{ item.chambre.createdAt|date('Y-m-d') }}</td>
+                                    <td>{{ item.chambre.dureeOccupation }} mois</td>
+                                 </tr>
+                              {% else %}
+                                 <tr>
+                                    <td colspan="4">Aucune Information associée.</td>
+                                 </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Paiements associés au locataire -->
+      <div class="row mt-3">
+         <div class="col-md-12 mt-3">
+            <div class="full white_shd">
+               <div class="full graph_head">
+                  <div class="heading1 margin_0">
+                     <h2>Paiement associé au locataire</h2>
+                  </div>
+               </div>
+               <div class="full padding_infor_info">
+                  <div class="price_table">
+                     <div class="table-responsive">
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th>Chambre</th>
+                                 <th>Montant</th>
+                                 <th>Date de paiement</th>
+                                 <th>Date de paiement Banque</th>
+                                 <th>Année Académique</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for item in chambresAvecPaiements %}
+                                 {% for paiement in item.paiements %}
+                                 <tr>
+                                    <td>{{ item.chambre.chambre.nom }}</td>
+                                    <td>{{ paiement.montant|number_format(2, '.', ',') }} €</td>
+                                    <td>{{ paiement.dateEncaissement|date('Y-m-d') }}</td>
+                                    <td>{{ paiement.dateDePaiementBanque ? paiement.dateDePaiementBanque|date('Y-m-d') : 'N/A' }}</td>
+                                    <td>{{ paiement.anneeAcademique.nom }}</td>
+                                 </tr>
+                                 {% else %}
+                                 <tr>
+                                    <td colspan="5">Aucun paiement associé pour cette chambre.</td>
+                                 </tr>
+                                 {% endfor %}
+                              {% else %}
+                                 <tr>
+                                    <td colspan="5">Aucun paiement associé.</td>
+                                 </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="container-fluid">
+      <div class="footer">
+         <p>Copyright © 2018 Designed by html.design. All rights reserved.</p>
+      </div>
+   </div>
+</div>

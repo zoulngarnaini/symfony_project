@@ -1,0 +1,38 @@
+{% include '/layouts/app.html.twig' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="my-5">
+                            <h3>Nouveau locataire</h3>
+                            <hr>
+                        </div>
+                        {{ form_start(form, {'attr': {'class': 'form-sample'}}) }}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        {{ form_label(form.nom) }}
+                                        <div class="col-sm-9">
+                                            {{ form_widget(form.nom) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        {{ form_label(form.prenom) }}
+                                        <div class="col-sm-9">
+                                            {{ form_widget(form.prenom) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+           
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

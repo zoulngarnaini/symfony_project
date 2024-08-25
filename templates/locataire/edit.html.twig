@@ -1,0 +1,17 @@
+{% include '/layouts/app.html.twig' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        {% block title %}Modifier Locataire{% endblock %}
+
+        {% block body %}
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Modifier Locataire</h4>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        {% endblock %}

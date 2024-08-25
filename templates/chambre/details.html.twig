@@ -1,0 +1,124 @@
+{% include '/layouts/app.html.twig' %}
+<div class="main-panel">
+   <div class="content-wrapper bg-white">
+      <!-- Détails de la chambre -->
+      <div class="row">
+         <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+               <div class="full graph_head">
+                  <div class="heading1 margin_3">
+                     <center>
+                     <h2><i class="fa fa-file-text-o"></i> Chambre {{ chambre.nom }}</h2>
+                     </center>
+                  </div>
+               </div>
+               <div class="full">
+                  <div class="invoice_inner">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <h4>Détails des locataires et paiements associés</h4>
+                           <div class="table-responsive">
+                              <table class="table table-striped">
+                                 <thead>
+                                    <tr>
+                                       <th>Locataire</th>
+                                       <th>Année Académique</th>
+                                       <th>Nombre de paiements</th>
+                                       <th>Montant payé</th>
+                                       <th>Date de paiement</th>
+                                       <th>Date de paiement Banque</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    {% for item in chambresAvecPaiements %}
+                                       <tr>
+                                          <td>{{ item.locataire.nom }}</td>
+                                          <td>{{ item.anneeAcademique.nom }}</td>
+                                          <td>{{ item.paiements ? item.paiements|length : '0' }} paiements</td>
+                                          {% for paiement in item.paiements %}
+                                             <td>{{ paiement.montant|number_format(2, '.', ',') }} Fcfa</td>
+                                             <td>{{ paiement.dateEncaissement|date('Y-m-d') }}</td>
+                                             <td>{{ paiement.dateDePaiementBanque ? paiement.dateDePaiementBanque|date('Y-m-d') : 'N/A' }}</td>
+                                          {% endfor %}
+                                       </tr>
+                                    {% else %}
+                                       <tr>
+                                          <td colspan="5">Aucun locataire ou paiement associé à cette chambre.</td>
+                                       </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Section Dépenses -->
+                     <div class="row mt-4">
+                        <div class="col-md-12">
+                           <h4>Dépenses associées à la chambre</h4>
+                           <div class="table-responsive">
+                              <table class="table table-striped">
+                                 <thead>
+                                    <tr>
+                                       <th>Description</th>
+                                       <th>Montant</th>
+                                       <th>Date</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    {% for depense in depenses %}
+                                       <tr>
+                                          <td>Description</td>
+                                          <td> Montant  Fcfa</td>
+                                          <td> Date</td>
+                                       </tr>
+                                    {% else %}
+                                       <tr>
+                                          <td colspan="3">Aucune dépense enregistrée pour cette chambre.</td>
+                                       </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Section Réalisations -->
+                     <div class="row mt-4">
+                        <div class="col-md-12">
+                           <h4>Réalisations associées à la chambre</h4>
+                           <div class="table-responsive">
+                              <table class="table table-striped">
+                                 <thead>
+                                    <tr>
+                                       <th>Description</th>
+                                       <th>Date</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    {% for realisation in realisations %}
+                                       <tr>
+                                          <td>Descriptiontd>
+                                          <td>Dqte</td>
+                                       </tr>
+                                    {% else %}
+                                       <tr>
+                                          <td colspan="2">Aucune réalisation enregistrée pour cette chambre.</td>
+                                       </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Pied de page -->
+      
+   </div>
+</div>
