@@ -15,7 +15,7 @@ class Paiement
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: ChambreLocataire::class, inversedBy: 'paiements')]
+    #[ORM\ManyToOne(targetEntity: ChambreLocataire::class, inversedBy: 'paiement')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ChambreLocataire $chambreLocataire = null;
 

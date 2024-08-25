@@ -111,7 +111,7 @@
                                  {% for paiement in item.paiements %}
                                  <tr>
                                     <td>{{ item.chambre.chambre.nom }}</td>
-                                    <td>{{ paiement.montant|number_format(2, '.', ',') }} €</td>
+                                    <td>{{ paiement.montant|number_format(2, '.', ',') }} Fcfa</td>
                                     <td>{{ paiement.dateEncaissement|date('Y-m-d') }}</td>
                                     <td>{{ paiement.dateDePaiementBanque ? paiement.dateDePaiementBanque|date('Y-m-d') : 'N/A' }}</td>
                                     <td>{{ paiement.anneeAcademique.nom }}</td>

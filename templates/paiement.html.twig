@@ -1,35 +1,71 @@
-<!-- partial -->
 {% include '/layouts/app.html.twig' %}
 <div class="main-panel">
   <div class="content-wrapper">
-
     <div class="row">
       <div class="col-md-12">
+        <h3>{{ message|default('Aucun message disponible') }}</h3>
         <div class="card">
+          <!-- Filter Section -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="anneeFilter">Filtrer par Année:</label>
+              <select id="anneeFilter" class="form-control">
+                <option value="">Toutes</option>
+                {% for annee in annees %}
+                  <option value="{{ annee.nom|default('N/A') }}">{{ annee.nom|default('N/A') }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="chambreFilter">Filtrer par Chambre:</label>
+              <select id="chambreFilter" class="form-control">
+                <option value="">Toutes</option>
+                {% for paiement in paiements %}
+                  <option value="{{ paiement.ChambreLocataire.chambre.nom|default('N/A') }}">{{ paiement.ChambreLocataire.chambre.nom|default('N/A') }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="trancheFilter">Filtrer par Tranche:</label>
+              <select id="trancheFilter" class="form-control">
+                <option value="">Toutes</option>
+                {% for tranche in tranches %}
+                  <option value="{{ tranche.nom|default('N/A') }}">{{ tranche.nom|default('N/A') }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          
           <div class="table-responsive pt-3">
-            <h6> {{message}}</h6>
             <table class="table table-striped project-orders-table">
               <thead>
                 <tr>
                   <th class="ml-5">Chambre</th>
                   <th>Montant</th>
                   <th>Tranche</th>
+                  <th>Nom du Locataire</th>
                   <th>Date de Paiement</th>
-                  <th>Date de paie Banque	</th>
-                  <th>Nom</th>
+                  <th>Date de paie Banque</th>
+                  <th>Annee</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="paiementTableBody">
                 {% for paiement in paiements %}
                 <tr>
-                  <td>{{paiement.chambrelocataireid}}</td>
-                  <td> {{paiement.montant}}</td>
-                  <td>{{paiement.tranche.nom}}</td>
+                  <td>{{ paiement.ChambreLocataire.chambre.nom|default('N/A') }}</td>
+                  <td>{{ paiement.montant|default('N/A') }}</td>
+                  <td>{{ paiement.tranche.nom|default('N/A') }}</td>
+                  <td>
+                    {% if paiement.ChambreLocataire and paiement.ChambreLocataire.locataire %}
+                        {{ paiement.ChambreLocataire.locataire.nom }}
+                    {% else %}
+                        Locataire non trouvé
+                    {% endif %}
+                </td>
                   <td>{{ paiement.dateEncaissement ? paiement.dateEncaissement.format('Y-m-d H:i:s') : 'N/A' }}</td>
-                  <td>{{ paiement.datedepaiementbanque ? paiement.dateEncaissement.format('Y-m-d H:i:s') : 'N/A' }}</td>
-                 
-                  <td>{{paiement.anneeacademiqueid}}</td>
+                  <td>{{ paiement.datedepaiementbanque ? paiement.datedepaiementbanque.format('Y-m-d H:i:s') : 'N/A' }}</td>
+                  <td>{{ paiement.anneeacademique.nom|default('N/A') }}</td>
                   <td>
                     <div class="d-flex align-items-center">
                       <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
@@ -54,24 +90,53 @@
         </div>
       </div>
     </div>
-
   </div>
-  <!-- content-wrapper ends -->
-  <!-- partial:partials/_footer.html -->
+
   <footer class="footer">
-      <div class="card">
-          <div class="card-body">
-              <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">Free <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrap dashboard</a> templates from Bootstrapdash.com</span>
-              </div>
-          </div>    
-      </div>        
+    <div class="card">
+      <div class="card-body">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+            Copyright © 2020 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrapdash</a>. All rights reserved.
+          </span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">
+            Free <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrap dashboard</a> templates from Bootstrapdash.com
+          </span>
+        </div>
+      </div>    
+    </div>        
   </footer>
-  <!-- partial -->
 </div>
-<!-- main-panel ends -->
-</div>
-<!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
+
+<script>
+// JavaScript to filter the table based on dropdown selections
+document.addEventListener('DOMContentLoaded', function () {
+  const anneeFilter = document.getElementById('anneeFilter');
+  const chambreFilter = document.getElementById('chambreFilter');
+  const trancheFilter = document.getElementById('trancheFilter');
+  const tableBody = document.getElementById('paiementTableBody');
+
+  function filterTable() {
+    const anneeValue = anneeFilter.value.toLowerCase();
+    const chambreValue = chambreFilter.value.toLowerCase();
+    const trancheValue = trancheFilter.value.toLowerCase();
+
+    Array.from(tableBody.getElementsByTagName('tr')).forEach(function (row) {
+      const annee = row.cells[6].textContent.toLowerCase();
+      const chambre = row.cells[0].textContent.toLowerCase();
+      const tranche = row.cells[2].textContent.toLowerCase();
+
+      const show = 
+        (anneeValue === "" || annee.includes(anneeValue)) &&
+        (chambreValue === "" || chambre.includes(chambreValue)) &&
+        (trancheValue === "" || tranche.includes(trancheValue));
+
+      row.style.display = show ? "" : "none";
+    });
+  }
+
+  anneeFilter.addEventListener('change', filterTable);
+  chambreFilter.addEventListener('change', filterTable);
+  trancheFilter.addEventListener('change', filterTable);
+});
+</script>

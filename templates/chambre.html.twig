@@ -6,6 +6,38 @@
       <div class="col-md-12">
         <div class="card">
           <h4>{{ message }}</h4>
+          
+          <!-- Filter Section -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="batimentFilter">Filtrer par Bâtiment:</label>
+              <select id="batimentFilter" class="form-control">
+                <option value="">Tous</option>
+                <option value="Batiment A">Batiment A</option>
+                <option value="Batiment B">Batiment B</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="statutFilter">Filtrer par Statut:</label>
+              <select id="statutFilter" class="form-control">
+                <option value="">Tous</option>
+                <option value="Magasin">Magasin</option>
+                <option value="Equipee">Equipee</option>
+                <option value="Non Equipee">Non Equipee</option>
+                
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="etatFilter">Filtrer par État:</label>
+              <select id="etatFilter" class="form-control">
+                <option value="">Tous</option>
+                <option value="Occupee">Occupee</option>
+                <option value="Libre">Libre</option>
+                
+              </select>
+            </div>
+          </div>
+          
           <div class="table-responsive pt-3">
             <table class="table table-striped project-orders-table">
               <thead>
@@ -20,7 +52,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="chambreTableBody">
                 {% for chambre in chambres %}
                 <tr>
                   <td>#{{ chambre.id }}</td>
@@ -29,32 +61,28 @@
                   <td>{{ chambre.statut }}</td>
                   <td>{{ chambre.localisation }}</td>
                   <td>{{ chambre.position }}</td>
-                  <td> {{ chambre.batiment.nom }}</td>
+                  <td>{{ chambre.batiment.nom }}</td>
                   <td>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <a type="button" class="btn btn-success btn-sm btn-icon-text mr-1" href="{{ path('app_det_chambre', {'id': chambre.id}) }}">
-                          Plus
-                          <i class="typcn typcn-edit btn-icon-append"></i>                          
-                        </a>
-                        <button type="button" class="btn btn-success btn-sm btn-icon-text mr-1">
-                          Modif
-                          <i class="typcn typcn-edit btn-icon-append"></i>                          
-                        </button> 
-                      </div>
-                  
-                      <div class="d-flex align-items-center mt-2">
-                        <button type="button" class="btn btn-success btn-sm btn-icon-text mr-1">
-                          Attrib
-                          <i class="typcn typcn-edit btn-icon-append"></i>                          
-                        </button> 
-                        <button type="button" class="btn btn-danger btn-sm btn-icon-text">
-                          Supp
-                          <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
-                        </button>
-                      </div>
-                    </td>
-                  
+                    <div class="d-flex align-items-center">
+                      <a type="button" class="btn btn-success btn-sm btn-icon-text mr-1" href="{{ path('app_det_chambre', {'id': chambre.id}) }}">
+                        Plus
+                        <i class="typcn typcn-edit btn-icon-append"></i>                          
+                      </a>
+                      <button type="button" class="btn btn-success btn-sm btn-icon-text mr-1">
+                        Modif
+                        <i class="typcn typcn-edit btn-icon-append"></i>                          
+                      </button> 
+                    </div>
+                    <div class="d-flex align-items-center mt-2">
+                      <button type="button" class="btn btn-success btn-sm btn-icon-text mr-1">
+                        Attrib
+                        <i class="typcn typcn-edit btn-icon-append"></i>                          
+                      </button> 
+                      <button type="button" class="btn btn-danger btn-sm btn-icon-text">
+                        Supp
+                        <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 {% else %}
@@ -70,3 +98,36 @@
     </div>
   </div>
 </div>
+
+<script>
+// JavaScript to filter the table based on dropdown selections
+document.addEventListener('DOMContentLoaded', function () {
+  const batimentFilter = document.getElementById('batimentFilter');
+  const statutFilter = document.getElementById('statutFilter');
+  const etatFilter = document.getElementById('etatFilter');
+  const tableBody = document.getElementById('chambreTableBody');
+
+  function filterTable() {
+    const batimentValue = batimentFilter.value.toLowerCase();
+    const statutValue = statutFilter.value.toLowerCase();
+    const etatValue = etatFilter.value.toLowerCase();
+    
+    Array.from(tableBody.getElementsByTagName('tr')).forEach(function (row) {
+      const batiment = row.cells[6].textContent.toLowerCase();
+      const statut = row.cells[3].textContent.toLowerCase();
+      const etat = row.cells[2].textContent.toLowerCase();
+      
+      const show = 
+        (batimentValue === "" || batiment.includes(batimentValue)) &&
+        (statutValue === "" || statut.includes(statutValue)) &&
+        (etatValue === "" || etat.includes(etatValue));
+      
+      row.style.display = show ? "" : "none";
+    });
+  }
+
+  batimentFilter.addEventListener('change', filterTable);
+  statutFilter.addEventListener('change', filterTable);
+  etatFilter.addEventListener('change', filterTable);
+});
+</script>

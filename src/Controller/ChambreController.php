@@ -66,6 +66,29 @@ class ChambreController extends AbstractController
             'realisations' => $realisations,
         ]);
     }
+    #[Route('/chambre/new', name: 'chambre_new')]
+    public function new(Request $request): Response
+    {
+        $chambre = new Chambre();
+        $form = $this->createForm(ChambreType::class, $chambre);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $chambre->setCreatedAt(new \DateTime());
+            $chambre->setUpdatedAt(new \DateTime());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($chambre);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('Toutes_chambre');
+        }
+
+        return $this->render('chambre/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
     
     
 }

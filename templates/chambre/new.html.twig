@@ -1,0 +1,54 @@
+{% include '/layouts/app.html.twig' %}
+{% block body %}
+<div class="main-panel">
+<div class="content-wrapper bg-white">
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Formulaire de Chambre</h4>
+            <p class="card-description">
+                Veuillez remplir les informations de la chambre
+            </p>
+            {{ form_start(form) }}
+            <div class="form-group row">
+                {{ form_label(form.Nom, 'Nom de la chambre', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                <div class="col-sm-9">
+                    {{ form_widget(form.Nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom de la chambre'}}) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form_label(form.Etat, 'État', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                <div class="col-sm-9">
+                    {{ form_widget(form.Etat, {'attr': {'class': 'form-control', 'placeholder': 'État de la chambre'}}) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form_label(form.Statut, 'Statut', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                <div class="col-sm-9">
+                    {{ form_widget(form.Statut, {'attr': {'class': 'form-control', 'placeholder': 'Statut de la chambre'}}) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form_label(form.Localisation, 'Localisation', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                <div class="col-sm-9">
+                    {{ form_widget(form.Localisation, {'attr': {'class': 'form-control', 'placeholder': 'Localisation de la chambre'}}) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form_label(form.Position, 'Position', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                <div class="col-sm-9">
+                    {{ form_widget(form.Position, {'attr': {'class': 'form-control', 'placeholder': 'Position dans le bâtiment'}}) }}
+                </div>
+            </div>
+            <div class="form-check form-check-flat form-check-primary">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input"> Chambre disponible
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
+            <a href="{{ path('chambre_index') }}" class="btn btn-light">Annuler</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
