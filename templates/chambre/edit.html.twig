@@ -1,49 +1,65 @@
-{% include '/layouts/app.html.twig' %}
+{% include 'layouts/app.html.twig' %}
+
 {% block body %}
 <div class="main-panel">
     <div class="content-wrapper bg-white">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Formulaire de Chambre</h4>
+                    <h4 class="card-title">Modifier la Chambre</h4>
                     <p class="card-description">
-                        Veuillez remplir les informations de la chambre
+                        Veuillez mettre à jour les informations de la chambre.
                     </p>
                     {{ form_start(form) }}
+                    
+                    <!-- Affichage des erreurs globales -->
+                    {% if form_errors(form) %}
+                        <div class="alert alert-danger">
+                            {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Champs du formulaire -->
                     <div class="form-group row">
                         {{ form_label(form.Nom, 'Nom de la chambre', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.Nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom de la chambre'}}) }}
+                            {{ form_errors(form.Nom) }}
                         </div>
                     </div>
                     <div class="form-group row">
                         {{ form_label(form.Etat, 'État', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.Etat, {'attr': {'class': 'form-control', 'placeholder': 'État de la chambre'}}) }}
+                            {{ form_errors(form.Etat) }}
                         </div>
                     </div>
                     <div class="form-group row">
                         {{ form_label(form.Statut, 'Statut', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.Statut, {'attr': {'class': 'form-control', 'placeholder': 'Statut de la chambre'}}) }}
+                            {{ form_errors(form.Statut) }}
                         </div>
                     </div>
                     <div class="form-group row">
                         {{ form_label(form.Localisation, 'Localisation', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.Localisation, {'attr': {'class': 'form-control', 'placeholder': 'Localisation de la chambre'}}) }}
+                            {{ form_errors(form.Localisation) }}
                         </div>
                     </div>
                     <div class="form-group row">
                         {{ form_label(form.Position, 'Position', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.Position, {'attr': {'class': 'form-control', 'placeholder': 'Position dans le bâtiment'}}) }}
+                            {{ form_errors(form.Position) }}
                         </div>
                     </div>
                     <div class="form-group row">
                         {{ form_label(form.batiment, 'Bâtiment', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.batiment, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.batiment) }}
                         </div>
                     </div>
                   

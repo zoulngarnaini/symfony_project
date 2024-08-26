@@ -1,9 +1,10 @@
 <?php
-
 namespace App\Controller;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Form\ChambreType;
+use App\Form\ChambreLocataireType;
 use App\Entity\Locataire;
 use App\Entity\ChambreLocataire;
 use App\Entity\Chambre;
@@ -22,7 +23,7 @@ class ChambreController extends AbstractController
         $chambres = $entityManager->getRepository(Chambre::class)->findAll();
 
         // Rendu de la vue avec les données des chambres 
-        return $this->render('chambre.html.twig', [
+        return $this->render('/chambre/chambre.html.twig', [
             'controller_name' => 'ChambreController',
             'message' => 'La liste de toutes les chambres',
             'chambres' => $chambres
@@ -66,19 +67,23 @@ class ChambreController extends AbstractController
             'realisations' => $realisations,
         ]);
     }
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     #[Route('/chambre/new', name: 'chambre_new')]
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $chambre = new Chambre();
         $form = $this->createForm(ChambreType::class, $chambre);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $chambre->setCreatedAt(new \DateTime());
             $chambre->setUpdatedAt(new \DateTime());
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($chambre);
             $entityManager->flush();
 
@@ -89,6 +94,51 @@ class ChambreController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
+    #[Route('/chambre/{id}/edit', name: 'chambre_edit')]
+    public function edit(Request $request, Chambre $chambre,EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ChambreType::class, $chambre);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Chambre modifiée avec succès!');
+
+            return $this->redirectToRoute('Toutes_chambre'); 
+        }
+
+        return $this->render('chambre/edit.html.twig', [
+            'chambre' => $chambre,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/chambre-locataire/new', name: 'chambre_locataire_new')]
+    public function newChambreLocataire(Request $request, EntityManagerInterface $em): Response
+    {
+        $chambreLocataire = new ChambreLocataire();
+        $form = $this->createForm(ChambreLocataireType::class, $chambreLocataire);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $chambreLocataire->setCreatedAt(new \DateTime()); 
+            $chambreLocataire->setUpdatedAt(new \DateTime()); 
+
+            $em->persist($chambreLocataire);
+            $em->flush();
+
+            $this->addFlash('success', 'Chambre Locataire créé avec succès.');
+
+            return $this->redirectToRoute('Toutes_chambre');
+        }
+
+        return $this->render('/chambre/chambre_locataire_new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    } 
     
 }

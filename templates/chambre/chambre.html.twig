@@ -8,8 +8,23 @@
           <h4>{{ message }}</h4>
           
           <!-- Filter Section -->
-          <div class="row mb-3">
+          <div class="row mb-3 md-12">
+
+            
+            <div class="col-md-12 mb-3">
+              <a type="button" class="btn btn-primary btn-sm btn-icon-text mr-1" href="{{ path('chambre_locataire_new') }}">
+                Attribuer une chambre
+                                  
+              </a>
+              <a type="button" class="btn btn-success btn-sm btn-icon-text mr-1" href="{{ path('chambre_new') }}">
+                Enregistrer une nouvelle chambre
+                                        
+              </a>
+              
+            </div>
+
             <div class="col-md-4">
+
               <label for="batimentFilter">Filtrer par Bâtiment:</label>
               <select id="batimentFilter" class="form-control">
                 <option value="">Tous</option>
@@ -68,21 +83,12 @@
                         Plus
                         <i class="typcn typcn-edit btn-icon-append"></i>                          
                       </a>
-                      <button type="button" class="btn btn-success btn-sm btn-icon-text mr-1">
+                      <a type="button" class="btn btn-success btn-sm btn-icon-text mr-1" href="{{ path('chambre_edit', {'id': chambre.id}) }}">
                         Modif
                         <i class="typcn typcn-edit btn-icon-append"></i>                          
-                      </button> 
+                      </a> 
                     </div>
-                    <div class="d-flex align-items-center mt-2">
-                      <button type="button" class="btn btn-success btn-sm btn-icon-text mr-1">
-                        Attrib
-                        <i class="typcn typcn-edit btn-icon-append"></i>                          
-                      </button> 
-                      <button type="button" class="btn btn-danger btn-sm btn-icon-text">
-                        Supp
-                        <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
-                      </button>
-                    </div>
+                 
                   </td>
                 </tr>
                 {% else %}
