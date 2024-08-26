@@ -19,7 +19,7 @@ class LocataireController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $locataires = $entityManager->getRepository(Locataire::class)->findAll();
-        return $this->render('locataire.html.twig', [
+        return $this->render('/locataire/locataire.html.twig', [
             'controller_name' => 'LocataireController',
             'message' => 'Les locataires d\'Oval City',
             'locataires' => $locataires

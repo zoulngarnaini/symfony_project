@@ -21,7 +21,7 @@ class PaiementController extends AbstractController
     $tranches = $entityManager->getRepository(Tranche::class)->findAll();
     $annees = $entityManager->getRepository(anneeAcademiques::class)->findAll();
 
-    return $this->render('paiement.html.twig', [
+    return $this->render('/paiement/paiement.html.twig', [
         'controller_name' => 'PaiementController',
         'message' => 'Liste de tous les paiements',
         'paiements' => $paiements,
