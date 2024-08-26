@@ -1,0 +1,9 @@
+cd project-repo-name
+composer install
+npm install      # or yarn install
+//database
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+npm run dev      # or npm run build for production
+php -S localhost:8000 -t public
